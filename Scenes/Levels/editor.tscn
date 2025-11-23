@@ -103,7 +103,17 @@ offset_right = 34.0
 offset_bottom = 86.0
 p_icon_region = Rect2(40, 40, 20, 20)
 
-[node name="Show_blocks" parent="Interface" index="1" instance=ExtResource("4_qcxs5")]
+[node name="MapName" type="Label" parent="Interface" index="1"]
+unique_name_in_owner = true
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 40.0
+grow_horizontal = 2
+text = "100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Show_blocks" parent="Interface" index="2" instance=ExtResource("4_qcxs5")]
 offset_left = 24.0
 offset_top = 24.0
 offset_right = 80.0
@@ -115,7 +125,7 @@ texture = ExtResource("7_7nn66")
 region_enabled = true
 region_rect = Rect2(0, 0, 20, 20)
 
-[node name="View" type="PanelContainer" parent="Interface" index="2"]
+[node name="View" type="PanelContainer" parent="Interface" index="3"]
 offset_left = 24.0
 offset_top = 88.0
 offset_right = 192.0
@@ -157,7 +167,7 @@ layout_mode = 2
 texture = null
 p_icon_region = Rect2(20, 60, 20, 20)
 
-[node name="Blocks" type="Control" parent="Interface" index="3"]
+[node name="Blocks" type="Control" parent="Interface" index="4"]
 unique_name_in_owner = true
 layout_mode = 3
 anchors_preset = 15
@@ -228,7 +238,7 @@ horizontal_alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Interface" index="4"]
+[node name="Label" type="Label" parent="Interface" index="5"]
 visible = false
 modulate = Color(0, 1, 0, 1)
 offset_left = 16.0
@@ -238,7 +248,7 @@ offset_bottom = 39.0
 scale = Vector2(0.5, 0.5)
 text = "100"
 
-[node name="Play" parent="Interface" index="5" instance=ExtResource("4_qcxs5")]
+[node name="Play" parent="Interface" index="6" instance=ExtResource("4_qcxs5")]
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -263,7 +273,7 @@ text = "play"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="FileDialog" type="FileDialog" parent="Interface" index="6"]
+[node name="FileDialog" type="FileDialog" parent="Interface" index="7"]
 initial_position = 1
 access = 2
 filters = PackedStringArray("*.txt")

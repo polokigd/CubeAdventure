@@ -22,7 +22,6 @@ func _create_block() -> void:
 
 func _has_block() -> bool:
 	var pos: Vector2i = _get_pos() / 20
-	print(Global.editor.data)
 	for i in Global.editor.data.keys():
 		if i == pos:
 			return true

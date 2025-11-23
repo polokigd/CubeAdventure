@@ -58,7 +58,7 @@ func _loop() -> void:
 		
 		if not blocks_to_create.is_empty():
 			chunk_loaded += 1
-			if chunk_loaded >= 1:
+			if chunk_loaded >= 2:
 				chunk_loaded = 0
 				print(chunk_loaded)
 				await _check_distance()

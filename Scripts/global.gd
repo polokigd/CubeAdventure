@@ -30,10 +30,10 @@ func get_current_level() -> Level:
 func clear_editorData() -> void:
 	editorData = {
 		"Select": {
-			"position": Vector2(-10.0, -19.5)
+			"position": Vector2(-20.0, -19.5)
 		},
 		"Camera": {
-			"position": Vector2.ONE
+			"position": -Vector2.ONE * 10.0
 		}
 	}
 

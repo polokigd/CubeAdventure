@@ -14,6 +14,7 @@ class_name Editor
 @onready var grid: Node2D = $Grid
 @onready var block_icon: Sprite2D = $Interface/Show_blocks/Block_icon
 @onready var file_dialog: FileDialog = $Interface/FileDialog
+@onready var map_name: Label = %MapName
 
 var blockData: Dictionary = {}
 var zoom: Vector2 = Vector2.ZERO
@@ -27,16 +28,16 @@ var selected_block: ActionButton:
 
 func _on_ready_2() -> void:
 	## Variables
-	var dataBlocks: Dictionary = {
-		"ground_1": {
-			"texture": 0,
-			"tiles": {
-				0: [0, 0],
-				1: [1, 0],
-				2: [2, 0],
-			}
-		}
-	}
+	#var dataBlocks: Dictionary = {
+		#"ground_1": {
+			#"texture": 0,
+			#"tiles": {
+				#0: [0, 0],
+				#1: [1, 0],
+				#2: [2, 0],
+			#}
+		#}
+	#}
 	## End/ Variables
 	
 	## Adjust icon of block
@@ -45,6 +46,7 @@ func _on_ready_2() -> void:
 	## End/ Adjust icon of block
 	
 	blocks.hide()
+	map_name.text = (tr("noname") if Global.mapMap == "" else Global.mapMap)
 	
 	grid_blocks.columns = 10 
 	
