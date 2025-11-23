@@ -21,7 +21,7 @@ func _delete_blocks() -> void:
 			
 func _create_blocks() -> void:
 	for pos in blocks_to_create.keys():
-		Global.get_current_level().map.set_cell(pos, 0, Vector2i.ZERO)
+		Global.get_current_level().map.set_cell(pos, blocks_to_create[pos]["id"], blocks_to_create[pos]["tile"])
 		await get_tree().physics_frame
 
 func _check_distance() -> void:

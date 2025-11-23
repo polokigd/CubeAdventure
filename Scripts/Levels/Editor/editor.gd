@@ -28,16 +28,18 @@ var selected_block: ActionButton:
 
 func _on_ready_2() -> void:
 	## Variables
-	#var dataBlocks: Dictionary = {
-		#"ground_1": {
-			#"texture": 0,
-			#"tiles": {
-				#0: [0, 0],
-				#1: [1, 0],
-				#2: [2, 0],
-			#}
-		#}
-	#}
+	var dataBlocks: Dictionary = {
+		"ground": {
+			"texture": 0,
+			"tiles": {}
+		}
+	}
+	
+	var index: int = 0
+	for y in 12:
+		for x in 3:
+			dataBlocks["ground"]["tiles"][index] = Vector2i(x, y)
+			index += 1
 	## End/ Variables
 	
 	## Adjust icon of block
@@ -48,37 +50,36 @@ func _on_ready_2() -> void:
 	blocks.hide()
 	map_name.text = (tr("noname") if Global.mapMap == "" else Global.mapMap)
 	
-	grid_blocks.columns = 10 
-	
 	## Connect buttons to '_pressed_button'
 	for i in get_tree().get_nodes_in_group("button"):
 		i.pressed.connect(_pressed_button.bind(i.name.to_lower()))
 	## End/ Connect buttons to '_pressed_button'
 	
 	## Create select blocks to build your map
-	#for key in dataBlocks:
-		#for tile in dataBlocks[key]["tiles"]:
-			#var icon: Sprite2D = Sprite2D.new()
-			#var button: ActionButton = preload("res://Scenes/Ui/action_button.tscn").instantiate()
-			#if key == "ground_1" and tile == 0:
+	for key in dataBlocks:
+		for tile in dataBlocks[key]["tiles"]:
+			var icon: Sprite2D = Sprite2D.new()
+			var button: ActionButton = preload("res://Scenes/Ui/action_button.tscn").instantiate()
+			button.name = "{0}_{1}".format([randi_range(0, 9999), dataBlocks[key]["texture"]])
+			#if key == "ground" and tile == 0:
 				#selected_block = button
 				#blockData["tile"] = Vector2(dataBlocks[key]["tiles"][tile][0], dataBlocks[key]["tiles"][tile][1])
-				#blockData["texture"] = dataBlocks[key]["texture"]
-				#block_icon.texture = load(textures[dataBlocks[key]["texture"]])
+				#blockData["id"] = 0
+				#block_icon.texture = textures[dataBlocks[key]["texture"]]
 				#block_icon.region_rect.position = Vector2(dataBlocks[key]["tiles"][tile][0], dataBlocks[key]["tiles"][tile][1]) * 20.0
-			#tile = dataBlocks[key]["tiles"][tile]; tile = Vector2(tile[0], tile[1]) * 20.0
-			#icon.region_enabled = true
-			#icon.region_rect = Rect2(tile.x, tile.y, 20, 20)
-			#icon.texture = load(textures[dataBlocks[key]["texture"]])
-			#button.p_icon_texture = null
-			#button.editor_description = str(dataBlocks[key]["texture"])
-			#button.pressed.connect(_select_block.bind(button, tile / 20.0))
-			#grid_blocks.add_child(button)
-			#button.custom_minimum_size = Vector2.ONE * 40.0
-			#icon.position = button.size / 2.0
-			#icon.scale = Vector2.ONE * button.size / 40.0
-			#button.add_child(icon)
-			#await get_tree().physics_frame
+			tile = dataBlocks[key]["tiles"][tile] * 20.0
+			icon.region_enabled = true
+			icon.region_rect = Rect2(tile.x, tile.y, 20, 20)
+			icon.texture = textures[dataBlocks[key]["texture"]]
+			button.p_icon_texture = null
+			button.editor_description = str(dataBlocks[key]["texture"])
+			button.pressed.connect(_select_block.bind(button, tile / 20.0))
+			grid_blocks.add_child(button)
+			button.custom_minimum_size = Vector2.ONE * 40.0
+			icon.position = button.size / 2.0
+			icon.scale = Vector2.ONE * button.size / 40.0
+			button.add_child(icon)
+			await get_tree().physics_frame
 	## End/ Create select blocks to build your map
 		
 	blocks.hide()
@@ -154,9 +155,9 @@ func _import_map(file_path: String) -> void:
 
 func _select_block(_T, button: ActionButton, tile: Vector2i) -> void:
 	selected_block = button
-	blockData["tile"] = tile
-	blockData["texture"] = int(selected_block.editor_description)
-	block_icon.texture = load(textures[blockData["texture"]])
+	for pv in [["tile", tile], ["id", int(selected_block.name.split("_")[1])]]:
+		blockData[pv[0]] = pv[1]
+	block_icon.texture = textures[int(selected_block.editor_description)]
 	block_icon.region_rect.position = blockData["tile"] * 20.0
 
 func _on_show_blocks_pressed(_action_button: ActionButton) -> void:

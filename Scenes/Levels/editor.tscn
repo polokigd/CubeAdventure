@@ -175,6 +175,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="Color" type="ColorRect" parent="Interface/Blocks" index="0"]
 layout_mode = 1
@@ -192,9 +193,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -300.0
+offset_left = -36.0
 offset_top = -136.0
-offset_right = 300.0
+offset_right = 36.0
 offset_bottom = 136.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -213,6 +214,7 @@ p_icon_region = Rect2(60, 20, 20, 20)
 
 [node name="MarginContainer" type="MarginContainer" parent="Interface/Blocks/Panel" index="1"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
@@ -222,21 +224,35 @@ theme_override_constants/margin_bottom = 8
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Interface/Blocks/Panel/MarginContainer/ScrollContainer" index="0"]
+[node name="MarginContainer" type="MarginContainer" parent="Interface/Blocks/Panel/MarginContainer/ScrollContainer" index="0"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Interface/Blocks/Panel/MarginContainer/ScrollContainer/MarginContainer" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
 theme_override_constants/separation = 8
 
-[node name="Title" type="Label" parent="Interface/Blocks/Panel/MarginContainer/ScrollContainer/VBoxContainer" index="0"]
+[node name="Title" type="Label" parent="Interface/Blocks/Panel/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" index="0"]
 layout_mode = 2
 text = "blocks"
 label_settings = SubResource("LabelSettings_sabxl")
 horizontal_alignment = 1
 
-[node name="Grid_blocks" type="GridContainer" parent="Interface/Blocks/Panel/MarginContainer/ScrollContainer/VBoxContainer" index="1"]
+[node name="Grid_blocks" type="GridContainer" parent="Interface/Blocks/Panel/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" index="1"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+columns = 3
 
 [node name="Label" type="Label" parent="Interface" index="5"]
 visible = false
@@ -283,6 +299,12 @@ position = Vector2(-10, -10)
 
 [node name="Camera" parent="Player" index="2"]
 enabled = false
+
+[node name="MarginContainer" parent="Player/CanvasLayer" index="1"]
+mouse_filter = 2
+
+[node name="Control" parent="Player/CanvasLayer/MarginContainer" index="0"]
+mouse_filter = 2
 
 [node name="Buttons" parent="Player/CanvasLayer/MarginContainer/Control" index="1"]
 visible = false

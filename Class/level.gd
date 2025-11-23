@@ -5,7 +5,6 @@ signal ready2
 
 @export_group("Propertys", "p")
 @export var p_run_map: bool = false
-
 @onready var map_enc: MapEnc = %MapEnc
 @onready var chunk: Chunk = %Chunk
 @onready var player: Character2D = $Player

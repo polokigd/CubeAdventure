@@ -11,11 +11,9 @@ func _create_block() -> void:
 	var pos: Vector2i = _get_pos() / 20
 	if not _has_block():
 		Global.editor.data[pos] = {}
-		Global.editor.data[pos] = {
-			"tile": Vector2i(1, 0),
-			"id": 0,
-			}
-		Global.editor.map.set_cell(pos, Global.editor.data[pos]["id"], Global.editor.data[pos]["tile"])
+		for p in Global.editor.blockData.keys():
+			Global.editor.data[pos][p] = Global.editor.blockData[p]
+		Global.editor.map.set_cell(pos, Global.editor.blockData["id"], Global.editor.blockData["tile"])
 	else:
 		Global.editor.map.set_cell(pos, -1)
 		Global.editor.data.erase(pos)
