@@ -1,0 +1,288 @@
+[gd_scene load_steps=9 format=3 uid="uid://d0llwd3ulxehw"]
+
+[ext_resource type="PackedScene" uid="uid://ckit05flmx55u" path="res://Scenes/Levels/level.tscn" id="1_5035q"]
+[ext_resource type="Script" uid="uid://bv3sjbtks13og" path="res://Scripts/Levels/Editor/grid.gd" id="2_lfawh"]
+[ext_resource type="Script" uid="uid://4657kowykmit" path="res://Scripts/Levels/Editor/editor.gd" id="2_sabxl"]
+[ext_resource type="PackedScene" uid="uid://cnfshvpbp2mf7" path="res://Scenes/Ui/action_button.tscn" id="4_qcxs5"]
+[ext_resource type="Script" uid="uid://bqba114kkfn55" path="res://Scripts/Levels/Editor/select.gd" id="5_rweog"]
+[ext_resource type="Texture2D" uid="uid://ckjuwidvfuo2s" path="res://Sprites/ground.png" id="7_7nn66"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7nn66"]
+bg_color = Color(1, 1, 1, 0.235294)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+anti_aliasing_size = 3.01
+
+[sub_resource type="LabelSettings" id="LabelSettings_sabxl"]
+font_size = 18
+
+[node name="Editor" instance=ExtResource("1_5035q")]
+script = ExtResource("2_sabxl")
+p_speed = 160.0
+p_run_map = true
+
+[node name="Camera" type="Camera2D" parent="." index="1"]
+position = Vector2(-10, -10)
+zoom = Vector2(4.01, 4.01)
+position_smoothing_enabled = true
+position_smoothing_speed = 10.0
+
+[node name="Map" parent="." index="2"]
+position = Vector2(0, -10)
+
+[node name="Grid" type="Node2D" parent="." index="3"]
+script = ExtResource("2_lfawh")
+p_width = 1
+p_color = Color(0.568973, 0.568973, 0.568973, 1)
+
+[node name="Select" type="Node2D" parent="." index="4"]
+script = ExtResource("5_rweog")
+
+[node name="Line" type="Line2D" parent="Select" index="0"]
+position = Vector2(0, -10)
+points = PackedVector2Array(0, 0, 20, 0, 20, 20, 0, 20, 0, -0.5)
+width = 1.0
+
+[node name="Interface" type="CanvasLayer" parent="." index="5"]
+
+[node name="Ui_mobile" type="MarginContainer" parent="Interface" index="0"]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 60
+theme_override_constants/margin_right = 60
+theme_override_constants/margin_bottom = 60
+
+[node name="Control" type="Control" parent="Interface/Ui_mobile" index="0"]
+layout_mode = 2
+
+[node name="Buttons" type="Control" parent="Interface/Ui_mobile/Control" index="0"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -80.0
+offset_top = -86.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(1.715, 1.715)
+pivot_offset = Vector2(80, 86)
+
+[node name="Zoom_up" parent="Interface/Ui_mobile/Control/Buttons" index="0" instance=ExtResource("4_qcxs5")]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+offset_left = 40.0
+offset_right = 80.0
+p_input = &"zoom_up"
+p_icon_region = Rect2(20, 20, 20, 20)
+
+[node name="Zoom_dowm" parent="Interface/Ui_mobile/Control/Buttons" index="1" instance=ExtResource("4_qcxs5")]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+offset_left = 40.0
+offset_top = 46.0
+offset_right = 80.0
+offset_bottom = 86.0
+p_input = &"zoom_dowm"
+p_icon_scale = Vector2(1.565, 1.565)
+p_icon_region = Rect2(40, 20, 20, 20)
+
+[node name="Create_block" parent="Interface/Ui_mobile/Control/Buttons" index="2" instance=ExtResource("4_qcxs5")]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+offset_left = -6.0
+offset_top = 46.0
+offset_right = 34.0
+offset_bottom = 86.0
+p_icon_region = Rect2(40, 40, 20, 20)
+
+[node name="Show_blocks" parent="Interface" index="1" instance=ExtResource("4_qcxs5")]
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 80.0
+offset_bottom = 80.0
+p_icon_texture = null
+
+[node name="Block_icon" type="Sprite2D" parent="Interface/Show_blocks" index="0"]
+texture = ExtResource("7_7nn66")
+region_enabled = true
+region_rect = Rect2(0, 0, 20, 20)
+
+[node name="View" type="PanelContainer" parent="Interface" index="2"]
+offset_left = 24.0
+offset_top = 88.0
+offset_right = 192.0
+offset_bottom = 136.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_7nn66")
+
+[node name="MarginContainer" type="MarginContainer" parent="Interface/View" index="0"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Interface/View/MarginContainer" index="0"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Show_grid" parent="Interface/View/MarginContainer/HBoxContainer" index="0" groups=["button"] instance=ExtResource("4_qcxs5")]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+p_icon_scale = Vector2(1.385, 1.385)
+p_icon_region = Rect2(60, 40, 20, 20)
+
+[node name="Show_colision" parent="Interface/View/MarginContainer/HBoxContainer" index="1" groups=["button"] instance=ExtResource("4_qcxs5")]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+p_icon_scale = Vector2(1.535, 1.535)
+p_icon_region = Rect2(0, 40, 20, 20)
+
+[node name="Export_map" parent="Interface/View/MarginContainer/HBoxContainer" index="2" groups=["button"] instance=ExtResource("4_qcxs5")]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+texture = null
+p_icon_region = Rect2(0, 60, 20, 20)
+
+[node name="Import_map" parent="Interface/View/MarginContainer/HBoxContainer" index="3" groups=["button"] instance=ExtResource("4_qcxs5")]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+texture = null
+p_icon_region = Rect2(20, 60, 20, 20)
+
+[node name="Blocks" type="Control" parent="Interface" index="3"]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Color" type="ColorRect" parent="Interface/Blocks" index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.898039)
+
+[node name="Panel" type="PanelContainer" parent="Interface/Blocks" index="1"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -136.0
+offset_right = 300.0
+offset_bottom = 136.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_7nn66")
+
+[node name="Ui" type="Control" parent="Interface/Blocks/Panel" index="0"]
+layout_mode = 2
+
+[node name="Hide_blocks" parent="Interface/Blocks/Panel/Ui" index="0" instance=ExtResource("4_qcxs5")]
+layout_mode = 0
+offset_left = -20.0
+offset_top = -16.0
+offset_right = 20.0
+offset_bottom = 24.0
+p_icon_region = Rect2(60, 20, 20, 20)
+
+[node name="MarginContainer" type="MarginContainer" parent="Interface/Blocks/Panel" index="1"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Interface/Blocks/Panel/MarginContainer" index="0"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Interface/Blocks/Panel/MarginContainer/ScrollContainer" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="Interface/Blocks/Panel/MarginContainer/ScrollContainer/VBoxContainer" index="0"]
+layout_mode = 2
+text = "blocks"
+label_settings = SubResource("LabelSettings_sabxl")
+horizontal_alignment = 1
+
+[node name="Grid_blocks" type="GridContainer" parent="Interface/Blocks/Panel/MarginContainer/ScrollContainer/VBoxContainer" index="1"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Interface" index="4"]
+visible = false
+modulate = Color(0, 1, 0, 1)
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 44.0
+offset_bottom = 39.0
+scale = Vector2(0.5, 0.5)
+text = "100"
+
+[node name="Play" parent="Interface" index="5" instance=ExtResource("4_qcxs5")]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -88.0
+offset_top = -56.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 0
+grow_vertical = 0
+p_icon_texture = null
+
+[node name="Label" type="Label" parent="Interface/Play" index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "play"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FileDialog" type="FileDialog" parent="Interface" index="6"]
+initial_position = 1
+access = 2
+filters = PackedStringArray("*.txt")
+
+[node name="Player" parent="." index="7"]
+position = Vector2(-10, -10)
+
+[node name="Camera" parent="Player" index="2"]
+enabled = false
+
+[node name="Buttons" parent="Player/CanvasLayer/MarginContainer/Control" index="1"]
+visible = false
+
+[connection signal="ready2" from="." to="." method="_on_ready_2"]
+[connection signal="pressed" from="Interface/Ui_mobile/Control/Buttons/Create_block" to="Select" method="_on_create_block_pressed"]
+[connection signal="pressed" from="Interface/Show_blocks" to="." method="_on_show_blocks_pressed"]
+[connection signal="pressed" from="Interface/Blocks/Panel/Ui/Hide_blocks" to="." method="_on_hide_blocks_pressed"]
+[connection signal="pressed" from="Interface/Play" to="." method="_on_play_pressed"]
+[connection signal="dir_selected" from="Interface/FileDialog" to="." method="_on_file_dialog_dir_selected"]
+[connection signal="file_selected" from="Interface/FileDialog" to="." method="_on_file_dialog_file_selected"]
+
+[editable path="Player"]

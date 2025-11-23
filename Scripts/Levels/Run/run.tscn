@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://4qfqqenpborf"]
+
+[ext_resource type="PackedScene" uid="uid://ckit05flmx55u" path="res://Scenes/Levels/level.tscn" id="1_c2atd"]
+
+[node name="Run" instance=ExtResource("1_c2atd")]
+p_run_map = true
+
+[editable path="Player"]

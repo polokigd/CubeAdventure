@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://cnfshvpbp2mf7"]
+
+[ext_resource type="Script" uid="uid://dl81stwbx6820" path="res://Class/actionbutton.gd" id="1_xs3de"]
+[ext_resource type="Texture2D" uid="uid://jcqai50fcd3y" path="res://Sprites/Ui/icons.png" id="2_8mk8u"]
+
+[sub_resource type="Gradient" id="Gradient_6y1j7"]
+offsets = PackedFloat32Array(0, 0.860215, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0.290196, 1, 1, 0.972549, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_aghgs"]
+gradient = SubResource("Gradient_6y1j7")
+width = 128
+height = 128
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.822695, 0.131206)
+
+[node name="ActionButton" type="TextureRect"]
+offset_right = 40.0
+offset_bottom = 40.0
+texture = SubResource("GradientTexture2D_aghgs")
+expand_mode = 1
+script = ExtResource("1_xs3de")
+p_icon_scale = Vector2(1.24, 1.24)
+p_icon_region = Rect2(0, 0, 20, 20)
+p_icon_texture = ExtResource("2_8mk8u")
+metadata/_custom_type_script = "uid://dl81stwbx6820"

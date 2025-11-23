@@ -1,0 +1,75 @@
+[gd_scene load_steps=6 format=3 uid="uid://dmr0fcamx7t56"]
+
+[ext_resource type="Script" uid="uid://bq4pl02agp23n" path="res://addons/virtual_joystick/virtual_joystick.gd" id="1_8x4dy"]
+
+[sub_resource type="Gradient" id="Gradient_6y1j7"]
+offsets = PackedFloat32Array(0, 0.860215, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0.290196, 1, 1, 0.972549, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_aghgs"]
+gradient = SubResource("Gradient_6y1j7")
+width = 128
+height = 128
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.822695, 0.131206)
+
+[sub_resource type="Gradient" id="Gradient_aghgs"]
+offsets = PackedFloat32Array(0, 0.860215, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0.72549, 1, 1, 0.972549, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ettsy"]
+gradient = SubResource("Gradient_aghgs")
+width = 128
+height = 128
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.822695, 0.131206)
+
+[node name="Joystick" type="Control"]
+custom_minimum_size = Vector2(144, 144)
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -120.0
+offset_right = 120.0
+grow_vertical = 0
+pivot_offset = Vector2(72, 72)
+script = ExtResource("1_8x4dy")
+pressed_color = Color(1, 1, 1, 1)
+clampzone_size = 70.0
+action_left = "left"
+action_right = "right"
+action_up = "up"
+action_down = "down"
+
+[node name="Base" type="TextureRect" parent="."]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(60, 60)
+mouse_force_pass_scroll_events = false
+texture = SubResource("GradientTexture2D_aghgs")
+expand_mode = 1
+
+[node name="Tip" type="TextureRect" parent="Base"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -40.0
+offset_right = 40.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_ettsy")
+expand_mode = 1

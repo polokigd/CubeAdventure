@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://chhq2dh4ggshj"]
+
+[ext_resource type="PackedScene" uid="uid://ckit05flmx55u" path="res://Scenes/Levels/level.tscn" id="1_cmgem"]
+
+[node name="Test" instance=ExtResource("1_cmgem")]
+
+[node name="Polygon2D" type="Polygon2D" parent="." index="0"]
+color = Color(0.113665, 0.113665, 0.113665, 1)
+polygon = PackedVector2Array(-151, 24, -19, 8, 149, 8, 237, 16, 823, -62, 1177, -13, 1241, 416, -388, 462, -1022, -5)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Polygon2D" index="0"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Polygon2D/StaticBody2D" index="0"]
+polygon = PackedVector2Array(-151, 24, -19, 8, 149, 8, 237, 16, 823, -62, 1177, -13, 1241, 416, -388, 462, -1022, -5)
+
+[editable path="Player"]

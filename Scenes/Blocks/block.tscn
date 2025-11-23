@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://b5fiv7yp7gt34"]
+
+[ext_resource type="Texture2D" uid="uid://ckjuwidvfuo2s" path="res://Sprites/ground.png" id="1_wgqwl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wgqwl"]
+
+[node name="Block" type="Sprite2D"]
+texture = ExtResource("1_wgqwl")
+region_enabled = true
+region_rect = Rect2(0, 0, 20, 20)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("RectangleShape2D_wgqwl")
+metadata/_edit_group_ = true
