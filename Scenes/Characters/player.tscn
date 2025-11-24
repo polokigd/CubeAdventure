@@ -188,3 +188,5 @@ offset_top = -56.0
 p_input = &"jump"
 p_icon_rotation = -90.0
 p_icon_scale = Vector2(3.52, 3.52)
+
+[connection signal="charcater_ready" from="." to="." method="_on_charcater_ready"]

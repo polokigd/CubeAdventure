@@ -1,8 +1,15 @@
 extends Character2D
 
+@onready var ui_mobile: MarginContainer = $CanvasLayer/MarginContainer
+
 var input_move: int = 0
 var _static: bool = true
 
+func _on_charcater_ready() -> void:
+	if not Global.mobile():
+		for node in [ui_mobile]:
+			node.queue_free()
+	
 func _physics_process(delta: float) -> void:
 	if _static: return
 	

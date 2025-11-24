@@ -26,8 +26,8 @@ func _ready() -> void:
 	
 	chunk.start(self)
 	
-	await get_tree().physics_frame
 	emit_signal("ready2")
+	await get_tree().physics_frame
 	
 	await get_tree().create_timer(Global.get_current_level().chunk.p_distance_size / 10.0).timeout
 	player._static = name == "Editor"

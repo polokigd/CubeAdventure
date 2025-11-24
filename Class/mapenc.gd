@@ -1,6 +1,8 @@
 extends Node
 class_name MapEnc
 
+var key: String = "batata com azeitona é muito bom!"
+
 func export(file_path: String, data: Dictionary) -> void:
 	var new_data: Array = []
 	if Global.mobile():
@@ -26,9 +28,9 @@ func import(file_path: String) -> void:
 		new_data[pos]["tile"] = _get_vector(list[1][0])
 		new_data[pos]["id"] = list[1][1]
 	Global.mapMap = file_path.split("/")[file_path.count("/")]
-	if Global.data != new_data:
-		Global.data = new_data
-		Transition.reload()
+ 	#if Global.data != new_data:
+	Global.data = new_data
+	Transition.reload()
 
 func _get_vector(array: Array) -> Vector2i:
 	return Vector2i(array[0], array[1])

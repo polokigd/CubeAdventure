@@ -15,8 +15,13 @@ class_name Editor
 @onready var block_icon: Sprite2D = $Interface/Show_blocks/Block_icon
 @onready var file_dialog: FileDialog = $Interface/FileDialog
 @onready var map_name: Label = %MapName
+@onready var scroll_blocks: ScrollContainer = $Interface/Blocks/Panel/MarginContainer/ScrollBlocks
+@onready var create: AudioStreamPlayer = %Create
+@onready var delete: AudioStreamPlayer = %Delete
+@onready var select: AudioStreamPlayer = %Select
+@onready var ui_play: ActionButton = $Interface/Play
+@onready var ui_joystick: VirtualJoystick = $Player/CanvasLayer/MarginContainer/Control/Joystick
 
-var blockData: Dictionary = {}
 var zoom: Vector2 = Vector2.ZERO
 var selected_block: ActionButton:
 	set(value):
@@ -61,13 +66,9 @@ func _on_ready_2() -> void:
 			var icon: Sprite2D = Sprite2D.new()
 			var button: ActionButton = preload("res://Scenes/Ui/action_button.tscn").instantiate()
 			button.name = "{0}_{1}".format([randi_range(0, 9999), dataBlocks[key]["texture"]])
-			#if key == "ground" and tile == 0:
-				#selected_block = button
-				#blockData["tile"] = Vector2(dataBlocks[key]["tiles"][tile][0], dataBlocks[key]["tiles"][tile][1])
-				#blockData["id"] = 0
-				#block_icon.texture = textures[dataBlocks[key]["texture"]]
-				#block_icon.region_rect.position = Vector2(dataBlocks[key]["tiles"][tile][0], dataBlocks[key]["tiles"][tile][1]) * 20.0
-			tile = dataBlocks[key]["tiles"][tile] * 20.0
+			tile = dataBlocks[key]["tiles"][tile] * 20
+			if (Vector2i(Global.editorData["blockData"]["tile"]) / 20) == Vector2i(tile):
+				selected_block = button
 			icon.region_enabled = true
 			icon.region_rect = Rect2(tile.x, tile.y, 20, 20)
 			icon.texture = textures[dataBlocks[key]["texture"]]
@@ -79,13 +80,18 @@ func _on_ready_2() -> void:
 			icon.position = button.size / 2.0
 			icon.scale = Vector2.ONE * button.size / 40.0
 			button.add_child(icon)
-			await get_tree().physics_frame
+			#await get_tree().physics_frame
 	## End/ Create select blocks to build your map
-		
+	
+	block_icon.texture = textures[Global.editorData["blockData"]["texture"]]
+	block_icon.region_rect.position = Global.editorData["blockData"]["tile"] * 20.0
+	scroll_blocks.scroll_vertical = Global.editorData["scroll_vertical"]
+	
 	blocks.hide()
 	zoom = camera.zoom
 	if not Global.mobile():
-		ui_mobile.queue_free()
+		for node in [ui_mobile, ui_joystick]:
+			node.queue_free()
 		
 func _process(delta: float) -> void:
 	if file_dialog.visible:
@@ -98,7 +104,8 @@ func _process(delta: float) -> void:
 	## Read editorData
 	for obj in Global.editorData.keys():
 		for p in Global.editorData[obj]:
-			get_node(obj).set(p, Global.editorData[obj][p])
+			if not obj in ["blockData", "scroll_vertical"]:
+				get_node(obj).set(p, Global.editorData[obj][p])
 	## End/ Read editorData
 	
 	## Move camera
@@ -138,6 +145,7 @@ func _pressed_button(_T, button: StringName) -> void:
 			else:
 				file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
 				file_dialog.show()
+				
 func _file_android(_status: bool, selected_paths: PackedStringArray, _selected_filter_index: int, type: String) -> void:
 	if not selected_paths.is_empty():
 		match type:
@@ -155,20 +163,18 @@ func _import_map(file_path: String) -> void:
 
 func _select_block(_T, button: ActionButton, tile: Vector2i) -> void:
 	selected_block = button
+	select.play()
 	for pv in [["tile", tile], ["id", int(selected_block.name.split("_")[1])]]:
-		blockData[pv[0]] = pv[1]
+		Global.editorData["blockData"][pv[0]] = pv[1]
+		Global.editorData["blockData"][pv[0]] = (pv[1] if not pv[1] is Vector2i else Vector2(pv[1]))
+	print(Global.editorData["blockData"]["tile"])
 	block_icon.texture = textures[int(selected_block.editor_description)]
-	block_icon.region_rect.position = blockData["tile"] * 20.0
+	block_icon.region_rect.position = Global.editorData["blockData"]["tile"] * 20.0
 
 func _on_show_blocks_pressed(_action_button: ActionButton) -> void:
-	blocks.show()
-	if ui_mobile:
-		ui_mobile.hide()
-
-func _on_hide_blocks_pressed(_action_button: ActionButton) -> void:
-	blocks.hide()
-	if ui_mobile:
-		ui_mobile.show()
+	for node in [ui_mobile, ui_joystick, ui_play, blocks]:
+		if node:
+			node.visible = not node.visible
 
 func _on_play_pressed(_action_button: ActionButton) -> void:
 	Global.data = data
@@ -179,3 +185,6 @@ func _on_file_dialog_dir_selected(dir: String) -> void:
 
 func _on_file_dialog_file_selected(path: String) -> void:
 	_import_map(path)
+
+func _on_scroll_blocks_scroll_ended() -> void:
+	Global.editorData["scroll_vertical"] = scroll_blocks.scroll_vertical

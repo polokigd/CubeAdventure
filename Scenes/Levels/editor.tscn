@@ -1,9 +1,12 @@
-[gd_scene load_steps=9 format=3 uid="uid://d0llwd3ulxehw"]
+[gd_scene load_steps=12 format=3 uid="uid://d0llwd3ulxehw"]
 
 [ext_resource type="PackedScene" uid="uid://ckit05flmx55u" path="res://Scenes/Levels/level.tscn" id="1_5035q"]
 [ext_resource type="Script" uid="uid://bv3sjbtks13og" path="res://Scripts/Levels/Editor/grid.gd" id="2_lfawh"]
 [ext_resource type="Script" uid="uid://4657kowykmit" path="res://Scripts/Levels/Editor/editor.gd" id="2_sabxl"]
+[ext_resource type="AudioStream" uid="uid://b64bka373soah" path="res://Sounds/Editor/create.mp3" id="3_qe5th"]
+[ext_resource type="AudioStream" uid="uid://uhtmfb4btyam" path="res://Sounds/Editor/delete.mp3" id="4_kta3y"]
 [ext_resource type="PackedScene" uid="uid://cnfshvpbp2mf7" path="res://Scenes/Ui/action_button.tscn" id="4_qcxs5"]
+[ext_resource type="AudioStream" uid="uid://meekscujctgq" path="res://Sounds/Editor/select.mp3" id="5_kta3y"]
 [ext_resource type="Script" uid="uid://bqba114kkfn55" path="res://Scripts/Levels/Editor/select.gd" id="5_rweog"]
 [ext_resource type="Texture2D" uid="uid://ckjuwidvfuo2s" path="res://Sprites/ground.png" id="7_7nn66"]
 
@@ -23,21 +26,38 @@ script = ExtResource("2_sabxl")
 p_speed = 160.0
 p_run_map = true
 
-[node name="Camera" type="Camera2D" parent="." index="1"]
+[node name="Audios" type="Node" parent="." index="0"]
+
+[node name="Create" type="AudioStreamPlayer" parent="Audios" index="0"]
+unique_name_in_owner = true
+stream = ExtResource("3_qe5th")
+bus = &"sound_effect"
+
+[node name="Delete" type="AudioStreamPlayer" parent="Audios" index="1"]
+unique_name_in_owner = true
+stream = ExtResource("4_kta3y")
+bus = &"sound_effect"
+
+[node name="Select" type="AudioStreamPlayer" parent="Audios" index="2"]
+unique_name_in_owner = true
+stream = ExtResource("5_kta3y")
+bus = &"sound_effect"
+
+[node name="Camera" type="Camera2D" parent="." index="2"]
 position = Vector2(-10, -10)
 zoom = Vector2(4.01, 4.01)
 position_smoothing_enabled = true
 position_smoothing_speed = 10.0
 
-[node name="Map" parent="." index="2"]
+[node name="Map" parent="." index="3"]
 position = Vector2(0, -10)
 
-[node name="Grid" type="Node2D" parent="." index="3"]
+[node name="Grid" type="Node2D" parent="." index="4"]
 script = ExtResource("2_lfawh")
 p_width = 1
 p_color = Color(0.568973, 0.568973, 0.568973, 1)
 
-[node name="Select" type="Node2D" parent="." index="4"]
+[node name="Select" type="Node2D" parent="." index="5"]
 script = ExtResource("5_rweog")
 
 [node name="Line" type="Line2D" parent="Select" index="0"]
@@ -45,7 +65,7 @@ position = Vector2(0, -10)
 points = PackedVector2Array(0, 0, 20, 0, 20, 20, 0, 20, 0, -0.5)
 width = 1.0
 
-[node name="Interface" type="CanvasLayer" parent="." index="5"]
+[node name="Interface" type="CanvasLayer" parent="." index="6"]
 
 [node name="Ui_mobile" type="MarginContainer" parent="Interface" index="0"]
 unique_name_in_owner = true
@@ -220,11 +240,11 @@ theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Interface/Blocks/Panel/MarginContainer" index="0"]
+[node name="ScrollBlocks" type="ScrollContainer" parent="Interface/Blocks/Panel/MarginContainer" index="0"]
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="Interface/Blocks/Panel/MarginContainer/ScrollContainer" index="0"]
+[node name="MarginContainer" type="MarginContainer" parent="Interface/Blocks/Panel/MarginContainer/ScrollBlocks" index="0"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -234,20 +254,20 @@ theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Interface/Blocks/Panel/MarginContainer/ScrollContainer/MarginContainer" index="0"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Interface/Blocks/Panel/MarginContainer/ScrollBlocks/MarginContainer" index="0"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
 theme_override_constants/separation = 8
 
-[node name="Title" type="Label" parent="Interface/Blocks/Panel/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" index="0"]
+[node name="Title" type="Label" parent="Interface/Blocks/Panel/MarginContainer/ScrollBlocks/MarginContainer/VBoxContainer" index="0"]
 layout_mode = 2
 text = "blocks"
 label_settings = SubResource("LabelSettings_sabxl")
 horizontal_alignment = 1
 
-[node name="Grid_blocks" type="GridContainer" parent="Interface/Blocks/Panel/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" index="1"]
+[node name="Grid_blocks" type="GridContainer" parent="Interface/Blocks/Panel/MarginContainer/ScrollBlocks/MarginContainer/VBoxContainer" index="1"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -294,7 +314,7 @@ initial_position = 1
 access = 2
 filters = PackedStringArray("*.txt")
 
-[node name="Player" parent="." index="7"]
+[node name="Player" parent="." index="8"]
 position = Vector2(-10, -10)
 
 [node name="Camera" parent="Player" index="2"]
@@ -312,7 +332,8 @@ visible = false
 [connection signal="ready2" from="." to="." method="_on_ready_2"]
 [connection signal="pressed" from="Interface/Ui_mobile/Control/Buttons/Create_block" to="Select" method="_on_create_block_pressed"]
 [connection signal="pressed" from="Interface/Show_blocks" to="." method="_on_show_blocks_pressed"]
-[connection signal="pressed" from="Interface/Blocks/Panel/Ui/Hide_blocks" to="." method="_on_hide_blocks_pressed"]
+[connection signal="pressed" from="Interface/Blocks/Panel/Ui/Hide_blocks" to="." method="_on_show_blocks_pressed"]
+[connection signal="scroll_ended" from="Interface/Blocks/Panel/MarginContainer/ScrollBlocks" to="." method="_on_scroll_blocks_scroll_ended"]
 [connection signal="pressed" from="Interface/Play" to="." method="_on_play_pressed"]
 [connection signal="dir_selected" from="Interface/FileDialog" to="." method="_on_file_dialog_dir_selected"]
 [connection signal="file_selected" from="Interface/FileDialog" to="." method="_on_file_dialog_file_selected"]

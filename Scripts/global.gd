@@ -1,7 +1,7 @@
 extends Node
 
 @export_group("Propertys")
-@export_enum("get", "pc", "mobile", "linux", "windows", "android") var platform: String = "get"
+@export_enum("get", "pc", "mobile") var platform: String = "get"
 
 var level: Level = null
 var editor: Editor = null
@@ -19,6 +19,7 @@ func _ready() -> void:
 			platform = "pc"
 		elif platform in ["android"]:
 			platform = "mobile"
+		
 	#OS.alert(platform)
 
 func set_value_in_editorData(object: Node2D, key: String, propertys: Array) -> void:
@@ -27,6 +28,7 @@ func set_value_in_editorData(object: Node2D, key: String, propertys: Array) -> v
 
 func get_current_level() -> Level:
 	return get(("level" if Global.level else "editor"))
+	
 func clear_editorData() -> void:
 	editorData = {
 		"Select": {
@@ -34,33 +36,29 @@ func clear_editorData() -> void:
 		},
 		"Camera": {
 			"position": -Vector2.ONE * 10.0
-		}
+		},
+		"blockData": {
+			"texture": 0,
+			"id": 0,
+			"tile": Vector2.ZERO,
+		},
+		"scroll_vertical": 0.0
 	}
 
 func pc() -> bool:
-	if platform == "pc":
-		return true
-	return false
+	return platform == "pc"
 
 func mobile() -> bool:
-	if platform == "mobile":
-		return true
-	return false
+	return platform == "mobile"
 
 func android() -> bool:
-	if OS.get_name().to_lower() == "android":
-		return true
-	return false
+	return OS.get_name().to_lower() == "android"
 	
 func linux() -> bool:
-	if OS.get_name().to_lower() == "linux":
-		return true
-	return false
+	return OS.get_name().to_lower() == "linux"
 	
 func windows() -> bool:
-	if OS.get_name().to_lower() == "windows":
-		return true
-	return false
+	return OS.get_name().to_lower() == "windows"
 
 func linux_or_windows() -> bool:
 	if OS.get_name().to_lower() in ["linux", "windows"]:
