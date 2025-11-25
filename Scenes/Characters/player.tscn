@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bnc50kqmgd5jf"]
+[gd_scene load_steps=13 format=3 uid="uid://bnc50kqmgd5jf"]
 
 [ext_resource type="Script" uid="uid://cv8a33ro85l23" path="res://Scripts/Player/player.gd" id="1_40svl"]
 [ext_resource type="Texture2D" uid="uid://cxildw2lxmbvk" path="res://Sprites/Characters/Image1.png" id="2_al8ar"]
@@ -101,6 +101,9 @@ _data = {
 radius = 4.0
 height = 10.1526
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gy20a"]
+size = Vector2(6, 2)
+
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("n_sprite", "n_animation")]
 collision_layer = 2
 floor_constant_speed = true
@@ -118,6 +121,10 @@ p_jump_height = 23.0
 p_time_jump_apex = 0.3
 metadata/_custom_type_script = "uid://dk3j7pilogolr"
 
+[node name="Coyote_time" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
 [node name="Sprite" type="Sprite2D" parent="."]
 texture = ExtResource("2_al8ar")
 offset = Vector2(-1, -10)
@@ -134,10 +141,10 @@ position = Vector2(0, -5.07628)
 shape = SubResource("CapsuleShape2D_al8ar")
 
 [node name="Camera" type="Camera2D" parent="."]
+unique_name_in_owner = true
 position = Vector2(0, -5)
 offset = Vector2(0, -5.515)
 zoom = Vector2(3.63, 3.63)
-position_smoothing_enabled = true
 position_smoothing_speed = 10.0
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -189,4 +196,13 @@ p_input = &"jump"
 p_icon_rotation = -90.0
 p_icon_scale = Vector2(3.52, 3.52)
 
+[node name="Foot" type="Area2D" parent="."]
+collision_layer = 0
+
+[node name="Collision" type="CollisionShape2D" parent="Foot"]
+shape = SubResource("RectangleShape2D_gy20a")
+
 [connection signal="charcater_ready" from="." to="." method="_on_charcater_ready"]
+[connection signal="timeout" from="Coyote_time" to="." method="_on_coyote_time_timeout"]
+[connection signal="body_entered" from="Foot" to="." method="_on_foot_body_entered"]
+[connection signal="body_exited" from="Foot" to="." method="_on_foot_body_exited"]

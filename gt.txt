@@ -1,0 +1,28 @@
+[Map]
+
+"(-1, 0)"=[Vector2(0, 0), 0]
+"(0, 0)"=[Vector2(0, 0), 0]
+"(-2, 0)"=[Vector2(0, 0), 0]
+"(-3, -1)"=[Vector2(0, 0), 0]
+"(1, -1)"=[Vector2(0, 0), 0]
+"(-1, 1)"=[Vector2(0, 0), 0]
+
+[Player]
+
+position=Vector2(-10, -10)
+
+[Info]
+
+time={
+"hour": 20,
+"minute": 7,
+"second": 6
+}
+version="2.0"
+os="linux"
+day={
+"day": 25,
+"month": 11,
+"weekday": 2,
+"year": 2025
+}

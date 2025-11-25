@@ -87,6 +87,10 @@ func _on_ready_2() -> void:
 	block_icon.region_rect.position = Global.editorData["blockData"]["tile"] * 20.0
 	scroll_blocks.scroll_vertical = Global.editorData["scroll_vertical"]
 	
+	## Set propertys of player
+	#for i in Glo
+	## End/ Set propertys of player
+	
 	blocks.hide()
 	zoom = camera.zoom
 	if not Global.mobile():
@@ -137,13 +141,17 @@ func _pressed_button(_T, button: StringName) -> void:
 			if Global.android():
 				DisplayServer.file_dialog_show("", "0/storage/emulated", "map{0}.txt".format([randf_range(0, 9000000)]), false, DisplayServer.FILE_DIALOG_MODE_OPEN_DIR, (["*.txt"]), _file_android.bind("export"))
 			else:
-				file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_DIR
+				file_dialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
+				file_dialog.editor_description = "export"
+				file_dialog.title = tr("save_the_map")
 				file_dialog.show()
 		"import_map":
 			if Global.android():
 				DisplayServer.file_dialog_show("", "0/storage/emulated", "", false, DisplayServer.FILE_DIALOG_MODE_OPEN_FILE, (["*.txt"]), _file_android.bind("import"))
 			else:
 				file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+				file_dialog.editor_description = "import"
+				file_dialog.title = tr("import_a_map")
 				file_dialog.show()
 				
 func _file_android(_status: bool, selected_paths: PackedStringArray, _selected_filter_index: int, type: String) -> void:
@@ -155,7 +163,7 @@ func _file_android(_status: bool, selected_paths: PackedStringArray, _selected_f
 				_import_map(selected_paths[0])
 	
 func _export_map(path: String) -> void:
-	var file_path: String = ("{0}/{1}.txt".format([path, randf_range(0, 99999)]) if Global.mapMap == "" else Global.mapMap)
+	var file_path: String = (path if Global.mapMap == "" else Global.mapMap)
 	map_enc.export(file_path, data)
 	
 func _import_map(file_path: String) -> void:
@@ -172,6 +180,7 @@ func _select_block(_T, button: ActionButton, tile: Vector2i) -> void:
 	block_icon.region_rect.position = Global.editorData["blockData"]["tile"] * 20.0
 
 func _on_show_blocks_pressed(_action_button: ActionButton) -> void:
+	await get_tree().physics_frame
 	for node in [ui_mobile, ui_joystick, ui_play, blocks]:
 		if node:
 			node.visible = not node.visible
@@ -184,7 +193,12 @@ func _on_file_dialog_dir_selected(dir: String) -> void:
 	_export_map(dir)
 
 func _on_file_dialog_file_selected(path: String) -> void:
-	_import_map(path)
+	file_dialog.current_file = ""
+	match file_dialog.editor_description:
+		"import":
+			_import_map(path)
+		"export":
+			_export_map(path)
 
 func _on_scroll_blocks_scroll_ended() -> void:
 	Global.editorData["scroll_vertical"] = scroll_blocks.scroll_vertical

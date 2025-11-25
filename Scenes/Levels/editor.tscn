@@ -317,7 +317,7 @@ filters = PackedStringArray("*.txt")
 [node name="Player" parent="." index="8"]
 position = Vector2(-10, -10)
 
-[node name="Camera" parent="Player" index="2"]
+[node name="Camera" parent="Player" index="3"]
 enabled = false
 
 [node name="MarginContainer" parent="Player/CanvasLayer" index="1"]
@@ -335,7 +335,6 @@ visible = false
 [connection signal="pressed" from="Interface/Blocks/Panel/Ui/Hide_blocks" to="." method="_on_show_blocks_pressed"]
 [connection signal="scroll_ended" from="Interface/Blocks/Panel/MarginContainer/ScrollBlocks" to="." method="_on_scroll_blocks_scroll_ended"]
 [connection signal="pressed" from="Interface/Play" to="." method="_on_play_pressed"]
-[connection signal="dir_selected" from="Interface/FileDialog" to="." method="_on_file_dialog_dir_selected"]
 [connection signal="file_selected" from="Interface/FileDialog" to="." method="_on_file_dialog_file_selected"]
 
 [editable path="Player"]

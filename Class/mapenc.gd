@@ -1,36 +1,52 @@
 extends Node
 class_name MapEnc
 
-var key: String = "batata com azeitona é muito bom!"
+var file: ConfigFile = ConfigFile.new()
 
 func export(file_path: String, data: Dictionary) -> void:
-	var new_data: Array = []
-	if Global.mobile():
-		OS.alert(file_path)
+	## Get map properties to export
 	for pos in data.keys():
-		var propertys: Array = []
-		for p in data[pos].keys():
-			var value: Variant = data[pos][p]
-			if p in ["tile"]:
-				match p:
-					"tile":
-						propertys.append([value.x, value.y])
-			else:
-				propertys.append(value)
-		new_data.append([[pos.x, pos.y], propertys])
-	FileAccess.open(file_path, FileAccess.WRITE).store_string(str(new_data))
+		file.set_value("Map", str(pos), [data[pos]["tile"], data[pos]["id"]])
+	## End/ Get map properties to export
+	
+	## Get player properties to export
+	for p in ["position"]: 
+		file.set_value("Player", p, Global.get_current_level().player.get(p))
+	## End/ Get player properties to export
+	
+	## Get information about to export (LOl)
+	for i in [["time", Time.get_time_dict_from_system(true)], ["version", ProjectSettings.get_setting("application/config/version")], ["os", OS.get_name().to_lower()], ["day", Time.get_date_dict_from_system(true)]]:
+		file.set_value("Info", i[0], i[1])
+	## End/ Get information about to export (LOl)
+		
+	var getDataMap = func() -> String:
+		return file.encode_to_text()
+		
+	print(getDataMap.call())
+	
+	file.save(file_path)
 
 func import(file_path: String) -> void:
 	var new_data: Dictionary = {}
-	for list in JSON.parse_string(FileAccess.open(file_path, FileAccess.READ).get_as_text()):
-		var pos: Vector2i = _get_vector(list[0])
-		new_data[pos] = {}
-		new_data[pos]["tile"] = _get_vector(list[1][0])
-		new_data[pos]["id"] = list[1][1]
-	Global.mapMap = file_path.split("/")[file_path.count("/")]
- 	#if Global.data != new_data:
-	Global.data = new_data
-	Transition.reload()
-
-func _get_vector(array: Array) -> Vector2i:
-	return Vector2i(array[0], array[1])
+	match  file.load(file_path):
+		0:
+			## Get blocks
+			for pos in file.get_section_keys("Map"):
+				var new_pos = pos.split("(")[1].split(")")[0].split(","); new_pos = Vector2i(int(new_pos[0]), int(new_pos[1]))
+				var values: Array = file.get_value("Map", pos)
+				new_data[new_pos] = {}
+				new_data[new_pos] = {
+					"tile": values[0],
+					"id": values[1],
+				}
+				#new_data[Vector2i()] = {}
+			## End/ Get blocks
+			print(new_data)
+			Global.data = new_data
+			Transition.reload()
+			
+func _array_to_vector(array: Array) -> Vector2:
+	return Vector2(array[0], array[1])
+	
+func _vector_to_array(vector: Vector2) -> Array:
+	return [int(vector.x), int(vector.y)]

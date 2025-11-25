@@ -16,6 +16,7 @@ func _create_block() -> void:
 		Global.editor.map.set_cell(pos, Global.editorData["blockData"]["id"], Global.editorData["blockData"]["tile"])
 		Global.editor.create.stop()
 		Global.editor.create.play()
+		print(Global.data)
 	else:
 		Global.editor.map.set_cell(pos, -1)
 		Global.editor.data.erase(pos)
